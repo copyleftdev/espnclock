@@ -11,8 +11,8 @@ use std::sync::{Arc, Mutex};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use espnclock::{
-    fetch_scoreboard, fingerprint, league_is_hot, next_idle_or_hot_secs, Game, LEAGUES,
-    MIN_FETCH_SECS,
+    bind_is_loopback, fetch_scoreboard, fingerprint, league_is_hot, next_idle_or_hot_secs, Game,
+    LEAGUES, MIN_FETCH_SECS,
 };
 
 const MAX_CLIENTS: usize = 16;
@@ -33,7 +33,12 @@ struct Hub {
     clients: Mutex<Vec<Client>>,
 }
 
-pub fn serve(bind: &str, min_fetch: u64) -> Result<(), String> {
+pub fn serve(bind: &str, min_fetch: u64, expose: bool) -> Result<(), String> {
+    if !expose && !bind_is_loopback(bind) {
+        return Err(
+            "refusing non-loopback bind without --expose (this is not a public ESPN proxy)".into(),
+        );
+    }
     let min_fetch = min_fetch.max(MIN_FETCH_SECS);
     let listener = TcpListener::bind(bind).map_err(|e| e.to_string())?;
     eprintln!("espnclock serve http://{bind}  (espn ≥{min_fetch}s, localhost fan-out)");

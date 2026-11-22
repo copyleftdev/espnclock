@@ -4,7 +4,7 @@
 
 - `espnclock serve`: one ESPN poller, localhost SSE fan-out (`/events`, `/clock`, `/health`).
 - Global floor 15s between fetches. Idle leagues 300s. Hot = `in` or `pre` within 2h of commence.
-- Bind defaults to `127.0.0.1` — not a public scrape proxy.
+- Bind defaults to `127.0.0.1`. Non-loopback requires `--expose`.
 
 ## 0.1.0 — 2026-11-22
 

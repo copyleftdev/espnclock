@@ -39,6 +39,9 @@ enum Cmd {
         /// Floor seconds between ESPN fetches (clamped ≥15)
         #[arg(long, default_value_t = MIN_FETCH_SECS)]
         interval: u64,
+        /// Allow non-loopback bind (default is 127.0.0.1 only)
+        #[arg(long)]
+        expose: bool,
     },
 }
 
@@ -133,7 +136,11 @@ fn run(cli: Cli) -> i32 {
                 },
             },
         },
-        Cmd::Serve { bind, interval } => match serve::serve(&bind, interval) {
+        Cmd::Serve {
+            bind,
+            interval,
+            expose,
+        } => match serve::serve(&bind, interval, expose) {
             Ok(()) => 0,
             Err(e) => {
                 eprintln!("{e}");

@@ -147,6 +147,12 @@ pub fn next_idle_or_hot_secs(hot: bool) -> u64 {
     }
 }
 
+/// Default serve bind is loopback. Non-loopback needs an explicit expose flag.
+pub fn bind_is_loopback(bind: &str) -> bool {
+    let host = bind.rsplit_once(':').map(|(h, _)| h).unwrap_or(bind);
+    host == "127.0.0.1" || host == "localhost" || host == "[::1]" || host == "::1"
+}
+
 #[derive(Deserialize)]
 struct Board {
     events: Option<Vec<Value>>,
@@ -264,6 +270,9 @@ mod tests {
         assert!(!league_is_hot(&games[1..], t + 10_000));
         assert_eq!(next_idle_or_hot_secs(true), 15);
         assert_eq!(next_idle_or_hot_secs(false), 300);
+        assert!(bind_is_loopback("127.0.0.1:8796"));
+        assert!(bind_is_loopback("localhost:8796"));
+        assert!(!bind_is_loopback("0.0.0.0:8796"));
     }
 
     #[test]
