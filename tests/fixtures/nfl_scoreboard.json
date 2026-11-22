@@ -1,0 +1,47 @@
+{
+  "leagues": [{"slug": "nfl", "abbreviation": "NFL"}],
+  "events": [
+    {
+      "id": "401873070",
+      "date": "2026-11-22T18:00Z",
+      "name": "Miami Dolphins at Buffalo Bills",
+      "shortName": "MIA @ BUF",
+      "status": {
+        "type": {
+          "state": "in",
+          "completed": false,
+          "description": "In Progress",
+          "detail": "1:45 - 2nd Quarter",
+          "shortDetail": "1:45 - 2nd"
+        }
+      },
+      "competitions": [{
+        "competitors": [
+          {"homeAway": "home", "score": "14", "team": {"abbreviation": "BUF", "displayName": "Buffalo Bills"}},
+          {"homeAway": "away", "score": "7", "team": {"abbreviation": "MIA", "displayName": "Miami Dolphins"}}
+        ]
+      }]
+    },
+    {
+      "id": "401873075",
+      "date": "2026-11-22T21:25Z",
+      "name": "Las Vegas Raiders at Denver Broncos",
+      "shortName": "LV @ DEN",
+      "status": {
+        "type": {
+          "state": "pre",
+          "completed": false,
+          "description": "Scheduled",
+          "detail": "Sun, November 22nd at 1:25 PM PST",
+          "shortDetail": "1:25 PM PST"
+        }
+      },
+      "competitions": [{
+        "competitors": [
+          {"homeAway": "home", "score": "0", "team": {"abbreviation": "DEN", "displayName": "Denver Broncos"}},
+          {"homeAway": "away", "score": "0", "team": {"abbreviation": "LV", "displayName": "Las Vegas Raiders"}}
+        ]
+      }]
+    }
+  ]
+}

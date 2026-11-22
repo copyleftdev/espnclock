@@ -1,0 +1,23 @@
+[package]
+name = "espnclock"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.80"
+description = "Typed event clock over ESPN's public site.v2 scoreboard JSON (unofficial)"
+license = "MIT"
+repository = "https://github.com/copyleftdev/espnclock"
+readme = "README.md"
+keywords = ["espn", "sports", "scoreboard", "cli", "nfl"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+ureq = { version = "2", default-features = false, features = ["tls", "json"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
