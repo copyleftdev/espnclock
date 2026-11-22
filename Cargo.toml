@@ -1,6 +1,6 @@
 [package]
 name = "espnclock"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 rust-version = "1.80"
 description = "Typed event clock over ESPN's public site.v2 scoreboard JSON (unofficial)"
@@ -15,6 +15,7 @@ clap = { version = "4", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 ureq = { version = "2", default-features = false, features = ["tls", "json"] }
+time = { version = "0.3", default-features = false, features = ["parsing"] }
 
 [profile.release]
 opt-level = 3

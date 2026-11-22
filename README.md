@@ -25,7 +25,13 @@ pre  LV   @ DEN   1:25 PM PST 2026-11-22T21:25Z  401873075
 $ espnclock status nfl LV DEN --json
 $ espnclock started nfl
 $ echo $?   # 0 found, 2 ESPN down, 3 no such matchup
+
+$ espnclock serve                  # 127.0.0.1:8796
+$ curl -s http://127.0.0.1:8796/health
+$ curl -Ns http://127.0.0.1:8796/events
 ```
+
+`serve` is the socket. **One** process polls ESPN (≥15s between any fetches, idle leagues every 5 min, only `in` or `pre`≤2h are hot). N local clients subscribe over SSE. ESPN still sees HTTP. There is no ESPN WebSocket; do not put N Cloudflare Workers in front of this.
 
 ## What this is (and is not)
 
@@ -74,6 +80,7 @@ Binary: `espnclock` on PATH (`~/.cargo/bin` or copy to `~/.local/bin`).
 | `espnclock board nfl` | full board |
 | `espnclock started nfl` | state ≠ pre |
 | `espnclock status nfl LV DEN` | one matchup (order-insensitive) |
+| `espnclock serve [--bind 127.0.0.1:8796] [--interval 15]` | one poller, local SSE |
 | `--json` | machine output |
 | `--date 20261122` | pin the board day |
 

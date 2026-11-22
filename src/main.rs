@@ -1,5 +1,7 @@
 use clap::{Parser, Subcommand};
-use espnclock::{fetch_scoreboard, league, Game, LEAGUES};
+use espnclock::{fetch_scoreboard, league, Game, LEAGUES, MIN_FETCH_SECS};
+
+mod serve;
 
 #[derive(Parser)]
 #[command(
@@ -29,6 +31,14 @@ enum Cmd {
         league: String,
         away: String,
         home: String,
+    },
+    /// One ESPN poller, local SSE fan-out (does not multiply ESPN hits)
+    Serve {
+        #[arg(long, default_value = "127.0.0.1:8796")]
+        bind: String,
+        /// Floor seconds between ESPN fetches (clamped ≥15)
+        #[arg(long, default_value_t = MIN_FETCH_SECS)]
+        interval: u64,
     },
 }
 
@@ -122,6 +132,13 @@ fn run(cli: Cli) -> i32 {
                     }
                 },
             },
+        },
+        Cmd::Serve { bind, interval } => match serve::serve(&bind, interval) {
+            Ok(()) => 0,
+            Err(e) => {
+                eprintln!("{e}");
+                2
+            }
         },
     }
 }
