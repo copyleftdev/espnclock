@@ -1,8 +1,9 @@
 # ESPN HTTP surfaces
 
 There is no official public ESPN sports API. Three hosts show up in the wild.
+espnclock uses one of them.
 
-## site.api.espn.com (pinned)
+## site.api.espn.com (used)
 
 ```
 GET https://site.api.espn.com/apis/site/v2/sports/{sport}/{league}/scoreboard
@@ -13,8 +14,6 @@ GET .../scoreboard?dates=YYYYMMDD
 - `Cache-Control: max-age=1..4` (NFL scoreboard measured ~2–3s).
 - `User-Agent` required in practice.
 - No key.
-
-Sport/league pairs espnclock knows:
 
 | slug | path |
 |------|------|
@@ -27,25 +26,25 @@ Sport/league pairs espnclock knows:
 | nhl | hockey/nhl |
 | ufc | mma/ufc |
 
-Contract we pin:
+Fields we depend on:
 
 - `events[].id`
-- `events[].date` — ISO UTC, sometimes without seconds (`...T21:25Z`)
-- `events[].status.type.state` — `pre` | `in` | `post`
+- `events[].date` — ISO UTC; sometimes without seconds (`…T21:25Z`)
+- `events[].status.type.state` — `pre` \| `in` \| `post`
 - `events[].status.type.shortDetail`
 - `events[].competitions[0].competitors[].homeAway`
 - `events[].competitions[0].competitors[].team.abbreviation`
 - `events[].competitions[0].competitors[].score` (string)
 
-## sports.core.api.espn.com (out of scope)
+## sports.core.api.espn.com (not used)
 
-Paginated `{ count, items: [ { "$ref": "http://..." } ] }`. Following `$ref`
-is a crawler, not a clock. Cache-Control on `/v2/sports` measured `max-age=900`.
+Paginated `{ count, items: [ { "$ref": "http://…" } ] }`. Following `$ref` is
+a different program.
 
-## site.web.api.espn.com (out of scope)
+## site.web.api.espn.com (not used)
 
-Personalized / scoreboard header. Varnish. Not a stable public contract.
+Personalized header feeds. Not a stable public contract.
 
-## What we will not add
+## Out of scope
 
-Play-by-play, odds, fantasy, athlete graphs, Cloudflare worker farms.
+Play-by-play, odds, fantasy, athlete graphs.

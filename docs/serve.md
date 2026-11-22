@@ -1,6 +1,6 @@
 # serve
 
-Local fan-out. ESPN remains HTTP.
+Poll ESPN from one process. Serve the snapshot on localhost.
 
 ```
 espnclock serve --bind 127.0.0.1:8796 --interval 15
@@ -9,21 +9,21 @@ espnclock serve --bind 127.0.0.1:8796 --interval 15
 | Path | Type | Body |
 |------|------|------|
 | `/health` | JSON | `ok`, `fetches`, `leagues_hot`, `clients` |
-| `/clock` | JSON | full snapshot `{fetches, leagues_hot, boards}` |
-| `/events` | SSE | `event: clock` on fingerprint change; `: keepalive` |
+| `/clock` | JSON | `{fetches, leagues_hot, boards}` |
+| `/events` | SSE | `event: clock` when a board fingerprint changes; `: keepalive` |
 
-## Politeness
+## Rate
 
-- Global floor `--interval` (default 15s, cannot go below 15) between **any**
-  two ESPN fetches, all leagues.
-- League with no hot games: next fetch in 300s.
-- Hot = `state == in`, or `state == pre` and commence within 2 hours.
-- `post` is cold.
-- Max 16 SSE clients. Bind loopback unless `--expose`.
+- `--interval` is a floor (default 15s, cannot go lower) between **any** two
+  ESPN fetches, across all leagues.
+- A league with no live or imminent games is fetched every 300s.
+- Imminent = `pre` and start time within 2 hours. Live = `in`. Finals (`post`)
+  are idle.
+- At most 16 SSE clients.
 
-N curl clients on `/events` do not create N ESPN clients.
+Many local clients on `/events` still mean one ESPN client.
 
-## Not a public proxy
+## Bind
 
-`--bind 0.0.0.0:8796` is refused without `--expose`. This binary must not
-become an open ESPN relay.
+`--bind 0.0.0.0:8796` is refused unless you pass `--expose`. This is not meant
+to be an open relay for ESPN's JSON.

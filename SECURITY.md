@@ -1,8 +1,8 @@
 # Security
 
-espnclock talks to a **public, unauthenticated** JSON URL. It stores no
-credentials, signs nothing, and places no orders.
+espnclock only **reads** a public, unauthenticated JSON URL. It stores no
+credentials and does not write to ESPN.
 
-- Do not point it at authenticated ESPN fantasy cookies.
-- Do not log full scoreboard payloads to shared chats (PII-free, but bulky).
+- Do not point it at authenticated ESPN cookies.
+- Default bind is loopback. `--expose` is required for a non-loopback bind.
 - Report issues at https://github.com/copyleftdev/espnclock/issues

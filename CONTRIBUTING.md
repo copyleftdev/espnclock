@@ -1,10 +1,8 @@
 # Contributing
 
-PRs against `main`. `cargo fmt`, `cargo clippy -- -D warnings`, `cargo test`.
+PRs against `main`. Run `cargo fmt`, `cargo clippy -- -D warnings`, `cargo test`.
 
-Do not add sports.core `$ref` walking or fantasy endpoints in this crate
-without a new module and a documented host. The scoreboard clock is the
-product.
+Keep this crate a scoreboard clock. New ESPN hosts or fantasy endpoints need
+their own module and a note in `docs/hosts.md`.
 
-Issues: include the league slug, `--date` if used, and HTTP status — not a
-full dump.
+Issues: league slug, `--date` if used, HTTP status. Not a full JSON dump.
